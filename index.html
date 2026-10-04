@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d0b08">
+<title>Eva Shop Boutique</title>
+<meta name="description" content="Eva Shop · Stylistes made in Sénégal · Réservez vos tenues en ligne">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f2e8; --card:#fffdf8; --ink:#1d1912; --muted:#7a6f5c; --line:#e6dcc7;
+  --gold:#b8892c; --gold2:#d9b25a; --goldsoft:#f3e6c4; --ok:#2f7d4f; --okbg:#e2f2e7; --bad:#b03a2e;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#0d0b08;--card:#1a1610;--ink:#f3ead6;--muted:#a89a7e;--line:#2f281c;--gold:#d9b25a;--gold2:#f0cf7f;--goldsoft:#2c2414;--ok:#6fcf97;--okbg:#16291d;--bad:#f08b7f}
+}
+:root[data-theme="dark"]{--bg:#0d0b08;--card:#1a1610;--ink:#f3ead6;--muted:#a89a7e;--line:#2f281c;--gold:#d9b25a;--gold2:#f0cf7f;--goldsoft:#2c2414;--ok:#6fcf97;--okbg:#16291d;--bad:#f08b7f}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:Outfit,system-ui,sans-serif;font-size:16px;line-height:1.45;padding-bottom:calc(90px + env(safe-area-inset-bottom))}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px}
+
+.hero{background:radial-gradient(120% 90% at 50% 0%,#2a2214 0%,#0d0b08 65%);color:#f3ead6;text-align:center;padding:calc(28px + env(safe-area-inset-top)) 16px 26px;border-bottom:2px solid #d9b25a}
+.logo{width:96px;height:96px;margin:0 auto;border-radius:50%;background:radial-gradient(circle at 35% 30%,#2a2316,#000);border:2px solid #d9b25a;display:grid;place-items:center;font-family:'Great Vibes',cursive;color:#e9c46a;font-size:34px;box-shadow:0 0 0 6px rgba(217,178,90,.12)}
+.hero h1{font-family:'Great Vibes',cursive;font-weight:400;color:#e9c46a;font-size:52px;line-height:1;margin:14px 0 4px}
+.hero p{margin:0 auto;max-width:380px;color:#cbbd9f;font-size:15px}
+.hero .loc{display:inline-block;margin-top:10px;font-size:13px;letter-spacing:.06em;color:#a89a7e;text-transform:uppercase}
+.links{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:99px;font-size:14px;font-weight:600;text-decoration:none;border:1px solid #5a4720;color:#e9c46a;background:#14110c;cursor:pointer}
+.pill.wa{background:#25d366;color:#05210f;border-color:#25d366}
+
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0 6px}
+.how div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 8px;text-align:center;font-size:12.5px;color:var(--muted)}
+.how b{display:block;font-size:20px;color:var(--gold);font-family:'Great Vibes',cursive;font-weight:400;line-height:1.1}
+h2{font-size:21px;margin:22px 0 10px;font-weight:600}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mod{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;text-align:left;padding:0}
+.mod .ph{aspect-ratio:3/4;background:linear-gradient(160deg,var(--goldsoft),var(--card));display:grid;place-items:center;color:var(--gold);font-family:'Great Vibes',cursive;font-size:38px;overflow:hidden}
+.mod .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.mod .in{padding:9px 11px 12px}
+.mod .t{font-weight:600;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mod .p{color:var(--gold);font-weight:700;font-variant-numeric:tabular-nums}
+.sur{margin-top:12px;background:#0d0b08;color:#f3ead6;border:1px solid #5a4720;border-radius:18px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;width:100%;text-align:left}
+.sur b{color:#e9c46a;font-family:'Great Vibes',cursive;font-weight:400;font-size:28px;display:block;line-height:1}
+.sur span{font-size:13.5px;color:#cbbd9f}
+.empty{text-align:center;color:var(--muted);padding:26px 10px}
+.note{font-size:12.5px;color:var(--muted);text-align:center;margin:8px 0 0}
+
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:40;display:none;align-items:flex-end;justify-content:center}
+.ov.show{display:flex}
+.sheet{background:var(--bg);width:100%;max-width:560px;max-height:94vh;overflow:auto;border-radius:22px 22px 0 0;padding:8px 16px calc(22px + env(safe-area-inset-bottom))}
+.grab{width:40px;height:5px;border-radius:9px;background:var(--line);margin:4px auto 10px}
+.sheet h3{margin:0 0 4px;font-size:21px}
+.gal{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -16px 8px;padding:0 16px}
+.gal::-webkit-scrollbar{display:none}
+.gal>*{flex:0 0 88%;scroll-snap-align:center;height:min(62vh,480px);object-fit:cover;border-radius:16px;background:#000;display:block}
+.gal>*:only-child{flex-basis:100%}
+.dots{display:flex;gap:6px;justify-content:center;margin:0 0 12px}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--line);cursor:pointer}
+.dots i.on{background:var(--gold);width:18px;border-radius:9px}
+.mod .ph{position:relative}
+.play{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,.65);color:#e9c46a;font-size:12px;font-weight:600;padding:4px 8px;border-radius:99px;font-family:Outfit,sans-serif}
+.big{width:100%;max-height:420px;object-fit:cover;border-radius:16px;display:block;margin-bottom:12px}
+label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px;font-weight:500}
+input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:16px}
+textarea{min-height:70px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--gold2);border-color:transparent}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;min-width:80px;border:1px solid var(--line);background:var(--card);padding:10px 6px;border-radius:12px;font-size:14px;cursor:pointer}
+.seg button.on{background:var(--gold);border-color:var(--gold);color:#140f05;font-weight:600}
+.btn{border:0;border-radius:14px;padding:14px 16px;font-weight:600;cursor:pointer;background:linear-gradient(135deg,#f0cf7f,#b8892c);color:#140f05;width:100%;font-size:16.5px;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.btn.wa{background:#25d366;color:#05210f}
+.btn:disabled{opacity:.6}
+.tot{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:14px}
+.tot b{font-size:20px;color:var(--gold);font-variant-numeric:tabular-nums}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:12px}
+summary{cursor:pointer;font-weight:600;font-size:14.5px}
+.ok{text-align:center;padding:10px 0}
+.ok .ic{width:70px;height:70px;border-radius:50%;background:var(--okbg);color:var(--ok);display:grid;place-items:center;font-size:36px;margin:6px auto 10px}
+.recap{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:12px 0;text-align:left}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
+.kv:last-child{border:0}.kv span:first-child{color:var(--muted)}.kv span:last-child{text-align:right}
+.err{color:var(--bad);font-size:13.5px;margin-top:8px;display:none}
+.float{position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg) 35%);z-index:10}
+.float .wrap{padding:0}
+.demo{background:#7a5a12;color:#fff;text-align:center;font-size:12.5px;padding:6px}
+</style>
+</head>
+<body>
+<div id="demoBar" class="demo" style="display:none">Aperçu : exemples de modèles. Les vrais modèles apparaîtront après « Publier le catalogue ».</div>
+
+<section class="hero">
+  <div class="logo">Eva</div>
+  <h1 id="shopNom">Eva Shop</h1>
+  <p id="shopBio">Stylistes made in Sénégal 🇸🇳 · Tenues de bonne qualité</p>
+  <div class="loc" id="shopAdr">Louga · Touba</div>
+  <div class="links">
+    <a class="pill wa" id="waTop" href="#" onclick="askWa();return false">WhatsApp</a>
+    <a class="pill" href="https://www.tiktok.com/@evababy511" target="_blank" rel="noopener">TikTok @evababy511</a>
+  </div>
+</section>
+
+<main class="wrap">
+  <div class="how">
+    <div><b>1</b>Choisissez votre modèle</div>
+    <div><b>2</b>Réservez en 1 minute</div>
+    <div><b>3</b>On vous confirme sur WhatsApp</div>
+  </div>
+  <h2>Nos modèles disponibles</h2>
+  <div id="grid" class="grid"></div>
+  <button class="sur" onclick="openForm(null)">
+    <div style="font-size:30px">✂️</div>
+    <div><b>Sur mesure</b><span>Vous avez votre idée ou votre tissu ? Commandez une tenue faite pour vous.</span></div>
+  </button>
+  <p class="note" id="upd"></p>
+</main>
+
+<div class="ov" id="ov" onclick="if(event.target===this)closeSheet()"><div class="sheet" id="sheet"></div></div>
+
+<script>
+const VILLES=['Louga','Touba','Dakar','Autre'];
+const PAYS=['Espèces','Wave','Orange Money'];
+const MES=[['poitrine','Poitrine'],['taille','Taille'],['hanches','Hanches'],['epaule','Épaule'],['manche','Manche'],['longueur','Longueur']];
+let CAT=null;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fcfa=n=>(Math.round(+n||0)).toLocaleString('fr-FR').replace(/ | /g,' ')+' FCFA';
+function waNum(t){let d=String(t||'').replace(/\D/g,'');if(d.startsWith('00'))d=d.slice(2);if(d.length===9&&/^[37]/.test(d))d='221'+d;return d}
+function fdate(d){if(!d)return 'À convenir';return new Date(d+'T12:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}
+function mem(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem('evaC_'+k)||'null');localStorage.setItem('evaC_'+k,JSON.stringify(v))}catch(e){return null}}
+
+const DEMO={shop:{nom:'Eva Shop',tel:'',adresse:'Louga · Touba',bio:'Stylistes made in Sénégal 🇸🇳 · Tenues de bonne qualité'},topic:'',modeles:[
+  {id:'d1',nom:'Ensemble pantalon large blanc',prix:25000,tailles:'S M L XL',desc:'Chemise nouée et pantalon large, tissu léger.'},
+  {id:'d2',nom:'Ensemble wax doré',prix:30000,tailles:'M L XL',desc:'Haut ceinturé et pantalon fluide.'},
+  {id:'d3',nom:'Robe longue imprimée',prix:28000,tailles:'Taille unique',desc:''},
+  {id:'d4',nom:'Ensemble carreaux',prix:22000,tailles:'S M L',desc:''}]};
+
+async function init(){
+  try{
+    const r=await fetch('catalogue.json?v='+Date.now(),{cache:'no-store'});
+    if(!r.ok)throw 0; CAT=await r.json();
+  }catch(e){
+    if(!/github\.io$/.test(location.hostname)){CAT=DEMO;$('#demoBar').style.display='block'}
+    else CAT={shop:DEMO.shop,topic:'',modeles:[]};
+  }
+  const s=CAT.shop||{};
+  $('#shopNom').textContent=s.nom||'Eva Shop';
+  if(s.bio)$('#shopBio').textContent=s.bio;
+  if(s.adresse)$('#shopAdr').textContent=s.adresse;
+  if(CAT.updated)$('#upd').textContent='Catalogue mis à jour le '+new Date(CAT.updated).toLocaleDateString('fr-FR');
+  renderGrid();
+}
+function renderGrid(){
+  const L=CAT.modeles||[];
+  $('#grid').innerHTML=L.length?L.map(m=>`<button class="mod" onclick="showMod('${m.id}')">
+    <div class="ph">${pics(m)[0]?`<img src="${pics(m)[0]}" alt="${esc(m.nom)}" loading="lazy">`:'Eva'}${m.video?'<span class="play">▶ Vidéo</span>':''}</div>
+    <div class="in"><div class="t">${esc(m.nom)}</div><div class="p">${fcfa(m.prix)}</div></div></button>`).join('')
+    :`<div class="empty" style="grid-column:1/-1">Nouveaux modèles bientôt ✨<br>Écrivez-nous sur WhatsApp.</div>`;
+}
+const pics=m=>(m.photos&&m.photos.length?m.photos:(m.photo?[m.photo]:[]));
+function galDots(){const g=$('#gal'),d=$('#gdots');if(!g||!d)return;const w=g.firstElementChild.offsetWidth+8;const i=Math.round(g.scrollLeft/w);[...d.children].forEach((x,j)=>x.classList.toggle('on',j===i))}
+function galGo(i){const g=$('#gal');g.scrollTo({left:i*(g.firstElementChild.offsetWidth+8),behavior:'smooth'})}
+const findMod=id=>(CAT.modeles||[]).find(m=>m.id===id);
+function showMod(id){
+  const m=findMod(id);if(!m)return;
+  const items=[];
+  if(m.video)items.push(`<video src="${esc(m.video)}" ${pics(m)[0]?`poster="${pics(m)[0]}"`:''} controls playsinline muted autoplay loop preload="metadata"></video>`);
+  pics(m).forEach(src=>items.push(`<img src="${src}" alt="">`));
+  sheet(`${items.length?`<div class="gal" id="gal" onscroll="galDots()">${items.join('')}</div>${items.length>1?`<div class="dots" id="gdots">${items.map((_,i)=>`<i class="${i?'':'on'}" onclick="galGo(${i})"></i>`).join('')}</div>`:''}`:''}
+  <h3>${esc(m.nom)}</h3>
+  <div style="color:var(--gold);font-weight:700;font-size:19px">${fcfa(m.prix)}</div>
+  ${m.tailles?`<div style="color:var(--muted);font-size:14px;margin-top:4px">Tailles : ${esc(m.tailles)}</div>`:''}
+  ${m.desc?`<p style="margin:10px 0 0">${esc(m.desc)}</p>`:''}
+  ${m.tiktok?`<a class="btn ghost" style="margin-top:12px" href="${esc(m.tiktok)}" target="_blank" rel="noopener">▶ Voir la vidéo sur TikTok</a>`:''}
+  <div style="margin-top:16px"><button class="btn" onclick="openForm('${id}')">Réserver ce modèle</button></div>
+  <div style="margin-top:8px"><button class="btn ghost" onclick="closeSheet()">Voir d'autres modèles</button></div>`);
+}
+
+function openForm(id){
+  window._cur=id||'';
+  const m=id?findMod(id):null, me=mem('me')||{};
+  const sizes=m&&m.tailles?m.tailles.split(/[\s,\/]+/).filter(Boolean):[];
+  sheet(`<h3>${m?'Réserver':'Commande sur mesure'}</h3>
+  <div style="color:var(--muted);font-size:14.5px">${m?esc(m.nom)+' · '+fcfa(m.prix):'Décrivez la tenue que vous voulez'}</div>
+  <label>Votre nom</label><input id="fNom" autocomplete="name" value="${esc(me.nom||'')}" placeholder="Prénom et nom">
+  <label>Votre numéro WhatsApp</label><input id="fTel" type="tel" inputmode="tel" autocomplete="tel" value="${esc(me.tel||'')}" placeholder="77 123 45 67">
+  ${sizes.length>1?`<label>Taille</label><div class="seg" id="fTailleSeg">${sizes.map((t,i)=>`<button type="button" class="${i===0?'on':''}" data-v="${esc(t)}" onclick="pick(this)">${esc(t)}</button>`).join('')}</div>`
+   :`<label>Taille</label><input id="fTaille" placeholder="${m?'ex. M, L…':'ex. M, ou voir mesures'}" value="${sizes.length===1?esc(sizes[0]):''}">`}
+  ${m?`<label>Quantité</label><input id="fQte" type="number" min="1" inputmode="numeric" value="1">`:`<label>Description de la tenue</label><textarea id="fDesc" placeholder="Type de tenue, couleur, tissu, modèle vu sur TikTok…"></textarea>`}
+  <label>Retrait ou livraison</label>
+  <div class="seg" id="fMode"><button type="button" class="on" data-v="retrait" onclick="pick(this)">Retrait</button><button type="button" data-v="livraison" onclick="pick(this)">Livraison</button></div>
+  <label>Votre ville</label>
+  <div class="seg" id="fVille">${VILLES.map(v=>`<button type="button" class="${(me.ville||'Louga')===v?'on':''}" data-v="${v}" onclick="pick(this)">${v}</button>`).join('')}</div>
+  <label>Date souhaitée</label><input id="fDate" type="date" min="${new Date().toISOString().slice(0,10)}">
+  <label>Paiement</label>
+  <div class="seg" id="fPay">${PAYS.map((p,i)=>`<button type="button" class="${i===1?'on':''}" data-v="${p}" onclick="pick(this)">${p}</button>`).join('')}</div>
+  <details ${m?'':'open'}><summary>📏 Mes mesures (facultatif)</summary>
+    <div class="mes">${MES.map(([k,l])=>`<div><label>${l} (cm)</label><input id="ms_${k}" type="number" inputmode="decimal" value="${esc((me.mes||{})[k]||'')}"></div>`).join('')}</div>
+  </details>
+  <label>Message (facultatif)</label><textarea id="fNote" placeholder="Une précision ?"></textarea>
+  ${m?`<div class="tot"><span>Total estimé</span><b id="tot">${fcfa(m.prix)}</b></div>`:''}
+  <div class="err" id="err"></div>
+  <div style="margin-top:14px"><button class="btn" id="send" onclick="sendResa('${id||''}')">Envoyer ma réservation</button></div>
+  <p class="note">La livraison est en plus selon la ville. Nous vous confirmons sur WhatsApp.</p>`);
+}
+function pick(b){b.parentNode.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on')}
+const seg=id=>{const b=document.querySelector('#'+id+' button.on');return b?b.dataset.v:''};
+document.addEventListener('input',e=>{if(e.target.id==='fQte'){const t=$('#tot');const m=findMod(window._cur);if(t&&m)t.textContent=fcfa(m.prix*(+e.target.value||1))}});
+
+async function sendResa(id){
+  const m=id?findMod(id):null;
+  const nom=$('#fNom').value.trim(), tel=$('#fTel').value.trim();
+  const err=$('#err');err.style.display='none';
+  if(!nom||waNum(tel).length<9){err.textContent='Merci d\'indiquer votre nom et un numéro WhatsApp valide.';err.style.display='block';return}
+  const mes={};MES.forEach(([k])=>{const v=$('#ms_'+k).value;if(v)mes[k]=v});
+  const d={v:1,ref:Date.now().toString(36)+Math.random().toString(36).slice(2,6),nom,tel,
+    modeleId:m?m.id:'',modeleNom:m?m.nom:('Sur mesure'+($('#fDesc')&&$('#fDesc').value.trim()?' : '+$('#fDesc').value.trim():'')),
+    prix:m?+m.prix:0,qte:m?(+$('#fQte').value||1):1,
+    taille:$('#fTailleSeg')?seg('fTailleSeg'):($('#fTaille').value.trim()),
+    mode:seg('fMode'),ville:seg('fVille'),date:$('#fDate').value,pay:seg('fPay'),mes,note:$('#fNote').value.trim(),at:new Date().toISOString()};
+  mem('me',{nom,tel,ville:d.ville,mes});
+  const btn=$('#send');btn.disabled=true;btn.textContent='Envoi…';
+  let online=false;
+  if(CAT.topic){
+    const txt=`${d.nom} (${d.tel})\n${d.modeleNom}${d.taille?' · '+d.taille:''}${d.qte>1?' x'+d.qte:''}\n${d.mode==='livraison'?'Livraison':'Retrait'} ${d.ville} · ${fdate(d.date)}\n#DATA#${JSON.stringify(d)}`;
+    try{const r=await fetch('https://ntfy.sh/'+encodeURIComponent(CAT.topic)+'?title='+encodeURIComponent('Nouvelle reservation Eva Shop')+'&tags=dress',{method:'POST',body:txt});online=r.ok}catch(e){}
+  }
+  const list=mem('mine')||[];list.unshift(d);mem('mine',list.slice(0,20));
+  done(d,online);
+}
+function waText(d){
+  const tot=d.prix*d.qte;
+  return `Bonjour ${CAT.shop.nom||'Eva Shop'} 🌸\nJe viens de réserver sur votre page :\n\n👗 ${d.modeleNom}${d.taille?' (taille '+d.taille+')':''}${d.qte>1?' ×'+d.qte:''}\n${tot?'💰 '+fcfa(tot)+'\n':''}📅 ${d.mode==='livraison'?'Livraison':'Retrait'} : ${fdate(d.date)} · ${d.ville}\n💳 Paiement : ${d.pay}\n${Object.keys(d.mes).length?'📏 Mesures : '+Object.entries(d.mes).map(([k,v])=>k+' '+v).join(', ')+'\n':''}${d.note?'📝 '+d.note+'\n':''}\nNom : ${d.nom}\nRéf. ${d.ref.toUpperCase()}`;
+}
+function done(d,online){
+  const tot=d.prix*d.qte, n=waNum(CAT.shop.tel);
+  window._last=d;
+  sheet(`<div class="ok"><div class="ic">✓</div><h3>${online?'Réservation envoyée !':'Presque fini !'}</h3>
+  <p style="color:var(--muted);margin:4px 0 0">${online?'Merci '+esc(d.nom.split(' ')[0])+' ❤️ Nous vous confirmons très vite sur WhatsApp.':'Envoyez votre réservation sur WhatsApp pour la confirmer.'}</p></div>
+  <div class="recap">
+    <div class="kv"><span>Modèle</span><span>${esc(d.modeleNom)}</span></div>
+    ${d.taille?`<div class="kv"><span>Taille</span><span>${esc(d.taille)}${d.qte>1?' · ×'+d.qte:''}</span></div>`:''}
+    <div class="kv"><span>${d.mode==='livraison'?'Livraison':'Retrait'}</span><span>${esc(d.ville)} · ${fdate(d.date)}</span></div>
+    <div class="kv"><span>Paiement</span><span>${esc(d.pay)}</span></div>
+    ${tot?`<div class="kv"><span><b>Total</b></span><span><b>${fcfa(tot)}</b></span></div>`:''}
+    <div class="kv"><span>Référence</span><span>${d.ref.toUpperCase()}</span></div>
+  </div>
+  ${n?`<button class="btn wa" onclick="sendWa()">${online?'Envoyer aussi sur WhatsApp':'Envoyer sur WhatsApp'}</button>`:''}
+  <div style="margin-top:8px"><button class="btn ghost" onclick="closeSheet()">Retour aux modèles</button></div>
+  <p class="note">Gardez une capture d'écran de ce reçu.</p>`);
+}
+function sendWa(){const n=waNum(CAT.shop.tel);if(!n)return;location.href='https://wa.me/'+n+'?text='+encodeURIComponent(waText(window._last))}
+function askWa(){const n=waNum(CAT&&CAT.shop.tel);if(!n){alert('Numéro bientôt disponible');return}location.href='https://wa.me/'+n+'?text='+encodeURIComponent('Bonjour Eva Shop 🌸 ')}
+function sheet(h){$('#sheet').innerHTML='<div class="grab"></div>'+h;$('#ov').classList.add('show');$('#sheet').scrollTop=0;document.body.style.overflow='hidden'}
+function closeSheet(){$('#ov').classList.remove('show');document.body.style.overflow=''}
+init();
+</script>
+</body>
+</html>
