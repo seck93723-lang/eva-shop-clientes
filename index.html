@@ -238,9 +238,56 @@ function waText(d){
   const tot=d.prix*d.qte;
   return `Bonjour ${CAT.shop.nom||'Eva Shop'} 🌸\nJe viens de réserver sur votre page :\n\n👗 ${d.modeleNom}${d.taille?' (taille '+d.taille+')':''}${d.qte>1?' ×'+d.qte:''}\n${tot?'💰 '+fcfa(tot)+'\n':''}📅 ${d.mode==='livraison'?'Livraison':'Retrait'} : ${fdate(d.date)} · ${d.ville}\n💳 Paiement : ${d.pay}\n${Object.keys(d.mes).length?'📏 Mesures : '+Object.entries(d.mes).map(([k,v])=>k+' '+v).join(', ')+'\n':''}${d.note?'📝 '+d.note+'\n':''}\nNom : ${d.nom}\nRéf. ${d.ref.toUpperCase()}`;
 }
+/* ===== Reçu en image (enregistrer / partager) ===== */
+async function receiptBlob(R){
+  try{await document.fonts.load('64px "Great Vibes"');await document.fonts.load('600 30px Outfit')}catch(e){}
+  const Wd=1080,pad=70,rowH=74,cv=document.createElement('canvas');
+  const Hh=470+R.rows.length*rowH+170;cv.width=Wd;cv.height=Hh;const x=cv.getContext('2d');
+  x.fillStyle='#fffdf8';x.fillRect(0,0,Wd,Hh);
+  x.fillStyle='#0d0b08';x.fillRect(0,0,Wd,250);x.fillStyle='#d9b25a';x.fillRect(0,250,Wd,6);
+  x.textAlign='center';x.fillStyle='#e9c46a';x.font='96px "Great Vibes", cursive';x.fillText(R.shop,Wd/2,140);
+  x.fillStyle='#cbbd9f';x.font='30px Outfit, sans-serif';x.fillText(R.sub,Wd/2,200);
+  x.fillStyle='#1d1912';x.font='700 40px Outfit, sans-serif';x.fillText(R.title,Wd/2,335);
+  x.fillStyle='#7a6f5c';x.font='30px Outfit, sans-serif';x.fillText(R.date,Wd/2,385);
+  let y=470;
+  R.rows.forEach(([k,v,b])=>{
+    if(b){x.fillStyle='#f3e6c4';x.fillRect(pad-20,y-50,Wd-2*pad+40,rowH-4)}
+    x.textAlign='left';x.fillStyle=b?'#1d1912':'#7a6f5c';x.font=(b?'700 ':'')+'32px Outfit, sans-serif';x.fillText(k,pad,y);
+    x.textAlign='right';x.fillStyle='#1d1912';x.font=(b?'700 ':'500 ')+'32px Outfit, sans-serif';
+    let t=String(v);while(x.measureText(t).width>Wd*0.55&&t.length>3)t=t.slice(0,-2);if(t!==String(v))t+='…';
+    x.fillText(t,Wd-pad,y);
+    if(!b){x.strokeStyle='#e6dcc7';x.setLineDash([8,8]);x.beginPath();x.moveTo(pad,y+24);x.lineTo(Wd-pad,y+24);x.stroke();x.setLineDash([])}
+    y+=rowH;
+  });
+  x.textAlign='center';x.fillStyle='#b8892c';x.font='34px Outfit, sans-serif';x.fillText(R.foot,Wd/2,y+60);
+  return await new Promise(ok=>cv.toBlob(ok,'image/png'));
+}
+let RC={key:'',blob:null};
+function prepReceipt(key,R){RC={key,blob:null};receiptBlob(R).then(b=>{if(RC.key===key)RC.blob=b}).catch(()=>{})}
+async function shareReceipt(R,name,key){
+  let blob=(key&&RC.key===key&&RC.blob)?RC.blob:null;
+  if(!blob){try{blob=await receiptBlob(R)}catch(e){alert('Erreur image');return}}
+  const file=new File([blob],name+'.png',{type:'image/png'});
+  try{
+    if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file]});return}
+  }catch(e){if(e&&e.name==='AbortError')return}
+  const url=URL.createObjectURL(blob);
+  showImg(url,name);
+}
+function showImg(url,name){
+  const o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:12px';
+  o.innerHTML=`<img src="${url}" style="max-width:100%;max-height:75vh;border-radius:12px"><div style="color:#fff;text-align:center;font-size:15px">Appuyez longtemps sur l'image → « Enregistrer dans Photos »</div><div style="display:flex;gap:8px"><a href="${url}" download="${name}.png" style="background:#d9b25a;color:#140f05;padding:12px 16px;border-radius:12px;font-weight:600;text-decoration:none">Télécharger</a><button style="background:#333;color:#fff;border:0;padding:12px 16px;border-radius:12px" onclick="this.closest('div[style]').parentNode.remove()">Fermer</button></div>`;
+  o.onclick=e=>{if(e.target===o)o.remove()};document.body.appendChild(o);
+}
+
+function mineData(){const d=window._last,tot=d.prix*d.qte;const rows=[['Nom',d.nom],['Téléphone',d.tel],['Modèle',d.modeleNom]];
+  if(d.taille)rows.push(['Taille · Qté',d.taille+' · '+d.qte]);rows.push([d.mode==='livraison'?'Livraison':'Retrait',d.ville+' · '+fdate(d.date)],['Paiement',d.pay]);
+  if(tot)rows.push(['Total',fcfa(tot),1]);rows.push(['Référence',d.ref.toUpperCase(),1]);
+  return {shop:CAT.shop.nom||'Eva Shop',sub:'Stylistes made in Sénégal'+(CAT.shop.tel?' · '+CAT.shop.tel:''),title:'RÉSERVATION',date:new Date().toLocaleDateString('fr-FR'),rows,foot:'Merci pour votre confiance ♥'}}
+function saveMine(){const d=window._last;shareReceipt(mineData(),'Reservation-'+d.ref.toUpperCase(),d.ref)}
 function done(d,online){
   const tot=d.prix*d.qte, n=waNum(CAT.shop.tel);
-  window._last=d;
+  window._last=d;setTimeout(()=>prepReceipt(d.ref,mineData()),50);
   sheet(`<div class="ok"><div class="ic">✓</div><h3>${online?'Réservation envoyée !':'Presque fini !'}</h3>
   <p style="color:var(--muted);margin:4px 0 0">${online?'Merci '+esc(d.nom.split(' ')[0])+' ❤️ Nous vous confirmons très vite sur WhatsApp.':'Envoyez votre réservation sur WhatsApp pour la confirmer.'}</p></div>
   <div class="recap">
@@ -252,8 +299,8 @@ function done(d,online){
     <div class="kv"><span>Référence</span><span>${d.ref.toUpperCase()}</span></div>
   </div>
   ${n?`<button class="btn wa" onclick="sendWa()">${online?'Envoyer aussi sur WhatsApp':'Envoyer sur WhatsApp'}</button>`:''}
-  <div style="margin-top:8px"><button class="btn ghost" onclick="closeSheet()">Retour aux modèles</button></div>
-  <p class="note">Gardez une capture d'écran de ce reçu.</p>`);
+  <div style="margin-top:8px"><button class="btn ghost" onclick="saveMine()">📷 Enregistrer le reçu</button></div>
+  <div style="margin-top:8px"><button class="btn ghost" onclick="closeSheet()">Retour aux modèles</button></div>`);
 }
 function sendWa(){const n=waNum(CAT.shop.tel);if(!n)return;location.href='https://wa.me/'+n+'?text='+encodeURIComponent(waText(window._last))}
 function askWa(){const n=waNum(CAT&&CAT.shop.tel);if(!n){alert('Numéro bientôt disponible');return}location.href='https://wa.me/'+n+'?text='+encodeURIComponent('Bonjour Eva Shop 🌸 ')}
